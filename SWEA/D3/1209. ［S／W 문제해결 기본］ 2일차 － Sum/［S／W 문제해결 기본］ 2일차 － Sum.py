@@ -1,39 +1,32 @@
-
-for z in range(10):
+for t in range(10):
     T = int(input())
-    arr = [list(map(int, input().split())) for _ in range(100)]
-    maxV = [0] * 4 # [row, col, dig, dig]
-
+    board = [[] for _ in range(100)]
     for i in range(100):
-        row_sum = 0
+        board[i] = list(map(int, input().split()))
+
+
+    maxV = 0
+    diag1 = 0
+    diag2 = 0
+    for i in range(100):
+        # 각 대각선의 합
+        diag1 += board[i][i] # 좌상에서 우하
+        diag2 += board[99-i][i] # 우상에서 좌하
+
+        # 각 행/열의 합
+        row = 0
+        column = 0
         for j in range(100):
-            # print(i, j)
-            row_sum += arr[i][j]
-            # print(row_sum)
-            if row_sum > maxV[0]:
-                maxV[0] = row_sum
+            row += board[i][j]
+            column += board[j][i]
+        if row > maxV:
+            maxV = row
+        if column > maxV:
+            maxV = column
 
-    for x in range(100):
-        col_sum = 0
-        for y in range(100):
-            col_sum += arr[y][x]
-            if col_sum > maxV[1]:
-                maxV[1] = col_sum
+    if diag1 > maxV:
+        maxV = diag1
+    if diag2 > maxV:
+        maxV = diag2
 
-    dig1_sum = 0
-    dig2_sum = 0
-    for a in range(100):
-        dig1_sum += arr[a][a]
-        if dig1_sum > maxV[2]:
-            maxV[2] = dig1_sum
-
-        dig2_sum += arr[99-a][a]
-        if dig2_sum > maxV[3]:
-            maxV[3] = dig2_sum
-
-    result = 0
-    for b in range(len(maxV)):
-        if maxV[b] > result:
-            result = maxV[b]
-
-    print(f'#{T} {result}')
+    print(f'#{T} {maxV}')
